@@ -1,0 +1,617 @@
+
+### Note technique recensant l’ensemble des scripts et présentant leur utilisation typique dans le cadre des tests
+
+---------------------------------------------
+## Script (‘IFT723_Adresse_cre_tables.sql’)
+### Définis les tables relatives à Adresse.
+
+### 1. Table ‘Adresse_Courante’
+   - Description : Contiens les informations actuelles sur les adresses.
+   - Utilisation typique : Stocke les informations de base sur une adresse courante.
+
+### 2. Table ‘Adresse_Courante_Log’
+   - Description : Table de log pour les modifications de la table ‘Adresse_Courante’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Adresse_Courante’ avec les informations de transaction.
+
+### 3. Table ‘Adresse_adresseID_Validite’
+   - Description : Contiens les périodes de validité des adresseID des adresses.
+   - Utilisation typique : Utilisée pour stocker les périodes de validité des adresseID.
+
+### 4. Table ‘Adresse_adresseID_Log’
+   - Description : Table de log pour les modifications de la table ‘Adresse_adresseID_Validite’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Adresse_adresseID_Validite’ avec les informations de transaction.
+
+### 5. Table ‘Adresse_Localisation_Validite’
+   - Description : Contiens les périodes de validité pour les informations d'une adresse.
+   - Utilisation typique : Utilisée pour stocker les périodes de validité des informations d'une adresse.
+
+### 6. Table ‘Adresse_Localisation_Log’
+   - Description : Table de log pour les modifications de la table ‘Adresse_Localisation_Validite’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Adresse_Localisation_Validite’ avec les informations de transaction.
+
+
+--------------------------------------------
+## Script (‘IFT723_Adresse_cre_trigger.sql’)
+### Défini les ériger pour les tables temporalisées Adresse.
+
+### 1. Trigger ‘Adresse_courante_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Adresse_Courante’. Il enregistre les changements dans la table de log ‘Adresse_Courante_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle adresse
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Adresse_Courante’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Adresse_Courante_Log’ avec les informations appropriées.
+   #2 Modification d'une adresse
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Adresse_Courante’.
+   - Vérification : La ligne correspondante dans la table de log ‘Adresse_Courante_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une adresse
+   - Script : Effectuez une opération de suppression sur la table ‘Adresse_Courante’.
+   - Vérification : La ligne correspondante dans la table de log ‘Adresse_Courante_Log’ est correctement fermée.
+
+
+### 2. Trigger ‘Adresse_adresseID_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Adresse_adresseID_Validite’. Il enregistre les changements dans la table de log ‘Adresse_adresseID_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité de adresseID
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Adresse_adresseID_Validite’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Adresse_adresseID_Log’ avec les informations appropriées.
+   #2 Modification d'une période de validité de adresseID
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Adresse_adresseID_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Adresse_adresseID_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une période de validité de adresseID
+   - Script : Effectuez une opération de suppression sur la table ‘Adresse_adresseID_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Adresse_adresseID_Log’ est correctement fermée.
+
+
+### 3. Trigger ‘Adresse_Localisation_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Adresse_Localisation_Validite’. Il enregistre les changements dans la table de log ‘adresse_Localisation_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité de localisation
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Adresse_Localisation_Validite’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘adresse_Localisation_Log’ avec les informations appropriées.
+   #2 Modification d'une période de validité de localisation
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Adresse_Localisation_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘adresse_Localisation_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une période de validité de localisation
+   - Script : Effectuez une opération de suppression sur la table ‘Adresse_Localisation_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘adresse_Localisation_Log’ est correctement fermée.
+
+
+--------------------------------------------
+## Script (‘IFT723_Adresse_cre_fonctions.sql’)
+### Définis les fonctions et procédures pour les tables temporalisées Adresse.
+
+### 1. Procédure ‘Adresse_Courante_ajout_at’
+- Description : Permets l'insertion d'une nouvelle adresse dans la table 'Adresse_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle adresse
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une nouvelle ligne est ajoutée à la table ‘Adresse_Courante’ avec les informations appropriées.
+
+### 2. Procédure ‘Adresse_Courante_ajout_now’
+- Description : Permets l'insertion d'une nouvelle adresse dans la table 'Adresse_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle adresse
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une nouvelle ligne est ajoutée à la table ‘Adresse_Courante’ avec les informations appropriées.
+
+
+### 3. Procédure ‘Adresse_Courante_modifier_Localisation_at’
+- Description : Permets la modification de la localisation d'une adresse dans la table 'Adresse_Courante' à une date fixé.
+   #Utilisation typique et scénario de tests
+	#1 Modification de la localisation
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Adresse_Courante’ avec les nouvelles informations.
+
+### 4. Procédure ‘Adresse_Courante_modifier_Localisation_now’
+- Description : Permets la modification de la localisation d'une adresse dans la table 'Adresse_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Modification de la localisation
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Adresse_Courante’ avec les nouvelles informations.
+
+### 5. Procédure ‘Adresse_Courante_retrait_at’
+- Description : Permets le retrait  d'un étudiant dans la table 'Adresse_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Retrait d'une adresse
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Adresse_Courante’.
+
+### 6. Procédure ‘Adresse_Courante_retrait_now’
+- Description : Permets le retrait  d'un étudiant dans la table 'Adresse_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Retrait d'une adresse
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Adresse_Courante’.
+
+### 7. Procédure ‘adresse_validite_ajout’
+- Description : Permets l'insertion d'une nouvelle période de validité dans toutes les tables de validité relative à 'Adresse'.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une nouvelle ligne est ajoutée aux tables de validité.
+	#2 Combinaison de périodes de validité contiguës
+   - Utilisation : Créer une ou plusieurs périodes de validité à l'aide de cette même fonction. Créer une nouvelle période de validité contiguë à celles créer auparavant.
+   - Vérification : Les lignes de validité devraient être combinées en une seule.
+
+### 8. Procédure ‘adresse_validite_modification’
+- Description : Permets la modification d'une période de validité dans toutes les tables de validité relative à 'Adresse'.
+   #Utilisation typique et scénario de tests
+	#1 Modification d'une période de validité
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une période de validité devrait être ajoutée aux tables de validité. Si une ancienne période de validité existait durant cette période, elle sera modifiée pour prendre en compte le changement.
+
+### 9. Procédure ‘adresse_validite_effacer’
+- Description : Permets le retrait de périodes de validité dans toutes les tables de validité relative à 'Adresse'.
+   #Utilisation typique et scénario de tests
+	#1 Retrait d'une période de validité comprise dans l'intervalle spécifié.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ou les périodes de validité ayant un intervalle commun à l'intervalle spécifié seront modifiées pour prendre en compte ce retrait.
+
+### 10. Procédure ‘Adresse_adresseID_Validite_ajout_PRIVATE’
+- Description : Permets l'insertion de données dans la table de validité 'Adresse_adresseID_Validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est ajoutée dans la table ‘Adresse_adresseID_Validite’.
+
+### 11. Procédure ‘Adresse_adresseID_Validite_modification_PRIVATE’
+- Description : Permets la modification de données dans la table de validité 'Adresse_adresseID_Validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Adresse_adresseID_Validite’.
+
+### 12. Procédure ‘Adresse_adresseID_Validite_effacer_PRIVATE’
+- Description : Permets le retrait de données dans la table de validité 'Adresse_adresseID_Validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Adresse_adresseID_Validite’.
+
+### 13. Procédure ‘etudiant_Localisation_validite_ajout_PRIVATE’
+- Description : Permets l'insertion de données dans la table de validité 'Adresse_Localisation_Validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est ajoutée dans la table ‘Adresse_Localisation_Validite’.
+
+### 14. Procédure ‘etudiant_Localisation_validite_modification_PRIVATE’
+- Description : Permets la modification de données dans la table de validité 'Adresse_Localisation_Validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Adresse_Localisation_Validite’.
+
+### 15. Procédure ‘etudiant_Localisation_validite_effacer_PRIVATE’
+- Description : Permets le retrait de données dans la table de validité 'Adresse_Localisation_Validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Adresse_Localisation_Validite’.
+
+
+
+
+
+
+---------------------------------------------
+## Script (‘IFT723_Etudiant_cre_tables.sql’)
+### Définis les tables relatives à Étudiant.
+
+### 1. Table ‘Etudiant_Courante’
+   - Description : Contiens les informations actuelles sur les étudiants.
+   - Utilisation typique : Utilisée pour stocker les données courantes des étudiants.
+
+### 2. Table ‘Etudiant_Courante_Log’
+   - Description : Table de log pour les modifications de la table ‘Etudiant_Courante’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Etudiant_Courante’ avec les informations de transaction.
+
+### 3. Table ‘Etudiant_Matricule_Validite’
+   - Description : Contiens les périodes de validité des matricules des étudiants.
+   - Utilisation typique : Utilisée pour stocker les périodes de validité des matricules.
+
+### 4. Table ‘Etudiant_Matricule_Log’
+   - Description : Table de log pour les modifications de la table ‘Etudiant_Matricule_Validite’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Etudiant_Matricule_Validite’ avec les informations de transaction.
+
+### 5. Table ‘Etudiant_Nom_Prenom_Validite’
+   - Description : Contiens les périodes de validité des noms et prénoms des étudiants.
+   - Utilisation typique : Utilisée pour stocker les périodes de validité des noms et prénoms.
+
+### 6. Table ‘Etudiant_Nom_Prenom_Log’
+   - Description : Table de log pour les modifications de la table ‘Etudiant_Nom_Prenom_Validite’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Etudiant_Nom_Prenom_Validite’ avec les informations de transaction.
+
+### 7. Table ‘Etudiant_Contact_Validite’
+   - Description : Contiens les périodes de validité des contacts (courriel, téléphone) des étudiants.
+   - Utilisation typique : Utilisée pour stocker les périodes de validité des contacts.
+
+### 8. Table ‘Etudiant_Contact_Log’
+   - Description : Table de log pour les modifications de la table ‘Etudiant_Contact_Validite’.
+   - Utilisation typique : Stocke les versions antérieures des données de ‘Etudiant_Contact_Validite’ avec les informations de transaction.
+
+### 9. Table ‘Etudiant_AdresseID_Validite’
+   - Description : Contient les périodes de validité des adresses ID des étudiants.
+   - Utilisation typique : Utilisée pour stocker les périodes de validité des adresses ID.
+
+### 10. Table ‘Etudiant_AdresseID_Log’
+    - Description : Table de log pour les modifications de la table ‘Etudiant_AdresseID_Validite’.
+    - Utilisation Typique : Stocke les versions antérieures des données de ‘Etudiant_AdresseID_Validite’ avec les informations de transaction.
+
+
+
+--------------------------------------------
+## Script (‘IFT723_Etudiant_cre_trigger.sql’)
+### Défini les ériger pour les tables temporalisées Etudiant.
+
+### 1. Trigger ‘Etudiant_courante_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Etudiant_Courante’. Il enregistre les changements dans la table de log ‘Etudiant_Courante_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'un nouvel étudiant
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Etudiant_Courante’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Etudiant_Courante_Log’ avec les informations appropriées.
+   #2 Modification d'un étudiant
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Etudiant_Courante’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Courante_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'un Étudiant
+   - Script : Effectuez une opération de suppression sur la table ‘Etudiant_Courante’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Courante_Log’ est correctement fermée.
+
+
+### 2. Trigger ‘Etudiant_matricule_validite_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Etudiant_Matricule_Validite’. Il enregistre les changements dans la table de log ‘Etudiant_Matricule_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité de Matricule
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Etudiant_Matricule_Validite’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Etudiant_Matricule_Log’ avec les informations appropriées.
+   #2 Modification d'une période de validité de Matricule
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Etudiant_Matricule_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Matricule_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une période de validité de Matricule
+   - Script : Effectuez une opération de suppression sur la table ‘Etudiant_Matricule_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Matricule_Log’ est correctement fermée.
+
+
+### 3. Trigger ‘Etudiant_nom_prenom_validite_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Etudiant_Nom_Prenom_Validite’. Il enregistre les changements dans la table de log ‘Etudiant_Nom_Prenom_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité de Nom_prenom
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Etudiant_Nom_Prenom_Validite’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Etudiant_Nom_Prenom_Log’ avec les informations appropriées.
+   #2 Modification d'une période de validité de Nom_prenom
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Etudiant_Nom_Prenom_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Nom_Prenom_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une période de validité de Nom_prenom
+   - Script : Effectuez une opération de suppression sur la table ‘Etudiant_Nom_Prenom_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Nom_Prenom_Log’ est correctement fermée.
+
+
+### 4. Trigger ‘Etudiant_contact_validite_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Etudiant_Contact_Validite’. Il enregistre les changements dans la table de log ‘Etudiant_Contact_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité de Contact
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Etudiant_Contact_Validite’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Etudiant_Contact_Log’ avec les informations appropriées.
+   #2 Modification d'une période de validité de Contact
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Etudiant_Contact_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Contact_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une période de validité de Contact
+   - Script : Effectuez une opération de suppression sur la table ‘Etudiant_Contact_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_Contact_Log’ est correctement fermée.
+
+
+### 5. Trigger ‘Etudiant_adresseID_validite_sauvegarde_Log_Trigger’
+- Description : Capture les opérations d'insertion, de mise à jour et de suppression sur la table ‘Etudiant_AdresseID_Validite’. Il enregistre les changements dans la table de log ‘Etudiant_AdresseID_Log’.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité de AdresseID
+   - Utilisation : Effectuez une opération d'insertion sur la table ‘Etudiant_AdresseID_Validite’.
+   - Vérification : Une nouvelle ligne est ajoutée à la table de log ‘Etudiant_AdresseID_Log’ avec les informations appropriées.
+   #2 Modification d'une période de validité de AdresseID
+   - Utilisation : Effectuez une opération de mise à jour sur la table ‘Etudiant_AdresseID_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_AdresseID_Log’ est correctement fermée, et une nouvelle ligne est ajoutée avec les informations mises à jour.
+   #3 Retrait d'une période de validité de AdresseID
+   - Script : Effectuez une opération de suppression sur la table ‘Etudiant_AdresseID_Validite’.
+   - Vérification : La ligne correspondante dans la table de log ‘Etudiant_AdresseID_Log’ est correctement fermée.
+
+
+---------------------------------------------
+## Script (‘IFT723_func_etu.sql’)
+### Définis les fonctions et procédures pour les tables temporalisées Etudiant.
+
+### 1. Procédure ‘etudiant_courante_ajout_at’
+- Description : Permets l'insertion d'un nouvel étudiant dans la table 'Etudiant_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'un nouvel étudiant
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une nouvelle ligne est ajoutée à la table ‘Etudiant_Courante’ avec les informations appropriées.
+
+### 2. Procédure ‘etudiant_courante_ajout_now’
+- Description : Permets l'insertion d'un nouvel étudiant dans la table 'Etudiant_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'un nouvel étudiant
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une nouvelle ligne est ajoutée à la table ‘Etudiant_Courante’ avec les informations appropriées.
+
+
+### 3. Procédure ‘etudiant_courante_modifier_nom_prenom_at’
+- Description : Permets la modification du nom et du prénom d'un étudiant dans la table 'Etudiant_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Modification du nom et du prénom
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_Courante’ avec les nouvelles informations.
+
+### 4. Procédure ‘etudiant_courante_modifier_nom_prenom_now’
+- Description : Permets la modification du nom et du prénom d'un étudiant dans la table 'Etudiant_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Modification du nom et du prénom
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_Courante’ avec les nouvelles informations.
+
+### 5. Procédure ‘etudiant_courante_modifier_contact_at’
+- Description : Permets la modification du courriel et du téléphone d'un étudiant dans la table 'Etudiant_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Modification du courriel et du téléphone
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_Courante’ avec les nouvelles informations.
+
+### 6. Procédure ‘etudiant_courante_modifier_contact_now’
+- Description : Permets la modification du courriel et du téléphone d'un étudiant dans la table 'Etudiant_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Modification du courriel et du téléphone
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_Courante’ avec les nouvelles informations.
+
+### 7. Procédure ‘etudiant_courante_modifier_adresseID_at’
+- Description : Permets la modification de l'adresseID d'un étudiant dans la table 'Etudiant_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Modification de l'adresseID
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_Courante’ avec les nouvelles informations.
+
+### 8. Procédure ‘etudiant_courante_modifier_adresseID_now’
+- Description : Permets la modification de l'adresseID d'un étudiant dans la table 'Etudiant_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Modification de l'adresseID
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_Courante’ avec les nouvelles informations.
+
+### 9. Procédure ‘etudiant_courante_retrait_at’
+- Description : Permets le retrait  d'un étudiant dans la table 'Etudiant_Courante' à une date fixée.
+   #Utilisation typique et scénario de tests
+	#1 Retrait d'un étudiant
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Etudiant_Courante’.
+
+### 10. Procédure ‘etudiant_courante_retrait_now’
+- Description : Permets le retrait  d'un étudiant dans la table 'Etudiant_Courante' au moment présent.
+   #Utilisation typique et scénario de tests
+	#1 Retrait d'un étudiant
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Etudiant_Courante’.
+
+### 11. Procédure ‘etudiant_validite_ajout’
+- Description : Permets l'insertion d'une nouvelle période de validité dans toutes les tables de validité relative à 'Etudiant'.
+   #Utilisation typique et scénario de tests
+	#1 Insertion d'une nouvelle période de validité
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une nouvelle ligne est ajoutée aux tables de validité.
+	#2 Combinaison de périodes de validité contiguës
+   - Utilisation : Créer une ou plusieurs périodes de validité à l'aide de cette même fonction. Créer une nouvelle période de validité contiguë à celles créer auparavant.
+   - Vérification : Les lignes de validité devraient être combinées en une seule.
+
+### 12. Procédure ‘etudiant_validite_modification’
+- Description : Permets la modification d'une période de validité dans toutes les tables de validité relative à 'Etudiant'.
+   #Utilisation typique et scénario de tests
+	#1 Modification d'une période de validité
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : Une période de validité devrait être ajoutée aux tables de validité. Si une ancienne période de validité existait durant cette période, elle sera modifiée pour prendre en compte le changement.
+
+### 13. Procédure ‘etudiant_validite_effacer’
+- Description : Permets le retrait de périodes de validité dans toutes les tables de validité relative à 'Etudiant'.
+   #Utilisation typique et scénario de tests
+	#1 Retrait d'une période de validité comprise dans l'intervalle spécifié.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ou les périodes de validité ayant un intervalle commun à l'intervalle spécifié seront modifiées pour prendre en compte ce retrait.
+
+### 14. Procédure ‘etudiant_matricule_validite_ajout_PRIVATE’
+- Description : Permets l'insertion de données dans la table de validité 'Etudiant_matricule_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est ajoutée dans la table ‘Etudiant_matricule_validite’.
+
+### 15. Procédure ‘etudiant_matricule_validite_modification_PRIVATE’
+- Description : Permets la modification de données dans la table de validité 'Etudiant_matricule_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_matricule_validite’.
+
+### 16. Procédure ‘etudiant_matricule_validite_effacer_PRIVATE’
+- Description : Permets le retrait de données dans la table de validité 'Etudiant_matricule_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Etudiant_matricule_validite’.
+
+### 17. Procédure ‘etudiant_nom_prenom_validite_ajout_PRIVATE’
+- Description : Permets l'insertion de données dans la table de validité 'Etudiant_nom_prenom_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est ajoutée dans la table ‘Etudiant_nom_prenom_validite’.
+
+### 18. Procédure ‘etudiant_nom_prenom_validite_modification_PRIVATE’
+- Description : Permets la modification de données dans la table de validité 'Etudiant_nom_prenom_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_nom_prenom_validite’.
+
+### 19. Procédure ‘etudiant_nom_prenom_validite_effacer_PRIVATE’
+- Description : Permets le retrait de données dans la table de validité 'Etudiant_nom_prenom_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Etudiant_nom_prenom_validite’.
+
+### 20. Procédure ‘etudiant_contact_validite_ajout_PRIVATE’
+- Description : Permets l'insertion de données dans la table de validité 'Etudiant_contact_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est ajoutée dans la table ‘Etudiant_contact_validite’.
+
+### 21. Procédure ‘etudiant_contact_validite_modification_PRIVATE’
+- Description : Permets la modification de données dans la table de validité 'Etudiant_contact_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_contact_validite’.
+
+### 22. Procédure ‘etudiant_contact_validite_effacer_PRIVATE’
+- Description : Permets le retrait de données dans la table de validité 'Etudiant_contact_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Etudiant_contact_validite’.
+
+### 23. Procédure ‘etudiant_adresseID_validite_ajout_PRIVATE’
+- Description : Permets l'insertion de données dans la table de validité 'Etudiant_adresseID_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est ajoutée dans la table ‘Etudiant_adresseID_validite’.
+
+### 24. Procédure ‘etudiant_adresseID_validite_modification_PRIVATE’
+- Description : Permets la modification de données dans la table de validité 'Etudiant_adresseID_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est modifiée dans la table ‘Etudiant_adresseID_validite’.
+
+### 25. Procédure ‘etudiant_adresseID_validite_effacer_PRIVATE’
+- Description : Permets le retrait de données dans la table de validité 'Etudiant_adresseID_validite'.
+   #Utilisation typique et scénario de tests
+	#Ne devrait pas être utilisée, sauf pour des procédures internes.
+   - Utilisation : Appeler la procédure avec les paramètres appropriés
+   - Vérification : La ligne appropriée est retirée dans la table ‘Etudiant_adresseID_validite’.
+
+
+
+
+
+---------------------------------------------
+## Script (‘IFT723_api.sql’)
+### Définis les fonctions et procédures rendues disponibles par l'API.
+
+### 1. Procédure ‘Adresse_Courant_ins’
+- Description : Fais appel à la fonction 'Adresse_Courante_ajout_at'
+
+### 2. Procédure ‘Adresse_Courant_now_ins’
+- Description : Fais appel à la fonction 'Adresse_Courante_ajout_now'
+
+### 3. Procédure ‘Adresse_Courant_Localisation_mod’
+- Description : Fais appel à la fonction 'Adresse_Courante_modifier_Localisation_at'
+
+### 4. Procédure ‘Adresse_Courante_Localisation_now_mod’
+- Description : Fais appel à la fonction 'Adresse_Courante_modifier_Localisation_now'
+
+### 5. Procédure ‘Adresse_Courante_ret’
+- Description : Fais appel à la fonction 'Adresse_Courante_retrait_at'
+
+### 6. Procédure ‘Adresse_Courante_now_ret’
+- Description : Fais appel à la fonction 'Adresse_Courante_retrait_now'
+
+### 7. Procédure ‘adresse_validite_ins’
+- Description : Fais appel à la fonction 'adresse_validite_ajout'
+
+### 8. Procédure ‘adresse_validite_mod’
+- Description : Fais appel à la fonction 'adresse_validite_modification'
+
+### 9. Procédure ‘adresse_validite_ret’
+- Description : Fais appel à la fonction 'adresse_validite_effacer'
+
+### 10. Procédure ‘etudiant_courante_ins’
+- Description : Fais appel à la fonction 'etudiant_courante_ajout_at'
+
+### 11. Procédure ‘etudiant_courante_now_ins’
+- Description : Fais appel à la fonction 'etudiant_courante_ajout_now'
+
+### 12. Procédure ‘etudiant_courante_nom_prenom_mod’
+- Description : Fais appel à la fonction 'etudiant_courante_modifier_nom_prenom_at'
+
+### 13. Procédure ‘etudiant_courant_nom_prenom_now_mod’
+- Description : Fais appel à la fonction 'etudiant_courante_modifier_nom_prenom_now'
+
+### 14. Procédure ‘etudiant_courant_contact_mod’
+- Description : Fais appel à la fonction 'etudiant_courante_modifier_contact_at'
+
+### 15. Procédure ‘etudiant_courant_contact_now_mod’
+- Description : Fais appel à la fonction 'etudiant_courante_modifier_contact_now'
+
+### 16. Procédure ‘etudiant_courant_adresseID_mod’
+- Description : Fais appel à la fonction 'etudiant_courante_modifier_adresseID_at'
+
+### 17. Procédure ‘etudiant_courant_adresseID_now_mod’
+- Description : Fais appel à la fonction 'etudiant_courante_modifier_adresseID_now'
+
+### 18. Procédure ‘etudiant_courant_ret’
+- Description : Fais appel à la fonction 'etudiant_courante_retrait_at'
+
+### 19. Procédure ‘etudiant_courant_now_ret’
+- Description : Fais appel à la fonction 'etudiant_courante_retrait_now'
+
+### 20. Procédure ‘etudiant_validite_ins’
+- Description : Fais appel à la fonction 'etudiant_validite_ajout'
+
+### 21. Procédure ‘etudiant_validite_mod’
+- Description : Fais appel à la fonction 'etudiant_validite_modification'
+
+### 22. Procédure ‘etudiant_validite_ret’
+- Description : Fais appel à la fonction 'etudiant_validite_effacer'
+
+
+
+
+---------------------------------------------
+#### 1. Script d'Insertion des Données (‘IFT723_ins_donnes.sql’)
+
+Le script ‘IFT723_ins-val.sql’ a pour objectif d'insérer des données de test dans les tables du schéma IFT723. Voici une analyse détaillée :
+
+- Localisation du schéma :
+  - Le script commence par définir le schéma actif comme étant "IFT723" avec l'instruction ‘set schema 'IFT723';’. 
+    Cela garantit que les opérations d'insertion des données s'appliqueront aux tables de ce schéma.
+
+- Insertion des données dans la table courante de Adresse :
+  - Des valeurs de test sont insérées dans la table "Adresse_Courante".
+  - Les informations utilisées sont le AdresseID, le numéro d'appartement (si applicable), l'adresse civique, le nom de la ville, le nom de la province, le code postal, le pays et la date de début de validité.
+
+- Insertion des données dans les tables de validité de Adresse :
+  - Des valeurs de test sont insérées dans la table "Adresse_adresseID_Validite" et "Adresse_Localisation_Validite".
+  - Les informations utilisées sont le AdresseID, le numéro d'appartement (si applicable), l'adresse civique, le nom de la ville, le nom de la province, le code postal, le pays, la date de début de validité et la date de fin de validité.
+
+- Insertion des données dans la table courante de Étudiant :
+  - Des valeurs de test sont insérées dans la table "Etudiant_Courante".
+  - Les informations utilisées sont le matricule de l'étudiant, son prénom, son nom, son adresse courriel, son numéro de téléphone, le adresseID (qui correspond à son adresse) et la date de début de validité.
+
+- Insertion des données dans les tables de validité de Étudiant :
+  - Des valeurs de test sont insérées dans la table "Etudiant_Matricule_Validite", "Etudiant_Nom_Prenom_Validite", "Etudiant_Contact_Validite" et "Etudiant_AdresseID_Validite".
+- Les informations utilisées sont le matricule de l'étudiant, son prénom, son nom, son adresse courriel, son numéro de téléphone, le adresseID (qui correspond à son adresse), la date de début de validité et la date de fin de validité.
+
+Le script ‘IFT723_ins_donnes.sql’ facilite l'insertion de données de test dans les tables du schéma IFT723, permettant ainsi de vérifier le bon fonctionnement de la base de données dans des conditions simulées. 
+Les contributeurs ont adapté et complété le script pour répondre aux besoins spécifiques du problème IFT723.
+
+
+---------------------------------------------
+#### Remarques générales
+
+- Assurez-vous d'exécuter les scripts dans l'ordre approprié pour éviter les erreurs de dépendance.
+
+- Assurez-vous d'exécuter les commandes une à une pour éviter des problèmes d'intervalle
+
+- Vérifiez que les contraintes de domaine sont adaptées à vos besoins spécifiques.
+
+- Les tables d'historique sont créées pour permettre le suivi des changements au fil du temps pour certains attributs, comme le matricule, le nom complet, le courriel, le téléphone, et les composants de l'adresse.
+
+- Les scripts sont documentés pour indiquer la date de réalisation et les auteurs (par exemple, "DONE 2023-11-22 (ELBO1901)").
