@@ -1,5 +1,5 @@
 # DB bi-temporelle
-base de données contenant une double composante temporelle : le moment de validité de la donnée et son moment d’existence dans la base de données.
+Base de données contenant une double composante temporelle : le moment de validité de la donnée et son moment d’existence dans la base de données.
 
 
 
